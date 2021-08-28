@@ -98,11 +98,14 @@ def keep_alive(req):
                 elif last_status != 0 and data["status"] == 0: # Server has shutdown
                     owcl("Server has shutdown")
                     jobid_check = False
-                elif last_status != data["status"]: # The status has changed
-                    println("Server status changed from %d to %d" % (last_status, data["status"]))
+                elif last_status != 5 and data["status"] == 5: # Server has ended
+                    println("Server has ended")
+                    jobid_check = False
                 elif data["status"] == 2: # Server is running
                     owcl("Server is running")
                 else:
+                    if last_status != data["status"]: # The status has changed
+                        println("Server status changed from %d to %d" % (last_status, data["status"]))
                     owcl(get_string_status(data["status"]))
 
                 if jobid_check and last_job_id != jobid: # JobId has changed
